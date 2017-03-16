@@ -12,10 +12,33 @@ const schema = buildSchema(`
     roll(numRolls: Int!): [Int]
   }
 
+  input MessageInput {
+    author: String
+    content: String
+  }
+
+  type Message {
+    id: ID!
+    author: String
+    content: String
+  }
+
   type Query {
     getDie(numSides: Int): RandomDie
+    getMessage(id: ID!): Message
+  }
+
+  type Mutation {
+    createMessage(input: MessageInput): Message
+    updateMessage(id: ID!, input: MessageInput): Message
   }
 `);
+
+class Message {
+  constructor(id, { author, content }) {
+    _.assign(this, { id, author, content });
+  }
+}
 
 class RandomDie {
   constructor(numSides) {
@@ -29,9 +52,29 @@ class RandomDie {
   }
 }
 
+const DB = {};
+
+const findOrThrow = (id) => {
+  if (!DB[id]) throw new Error(`message not found for id: ${id}`);
+};
+
 const root = {
   getDie({ numSides = 6 }) {
     return new RandomDie(numSides);
+  },
+  getMessage({ id }) {
+    findOrThrow(id);
+    return new Message(id, DB[id]);
+  },
+  createMessage({ input }) {
+    const id = _.uniqueId();
+    DB[id] = input;
+    return new Message(id, input);
+  },
+  updateMessage({ id, input }) {
+    findOrThrow(id);
+    DB[id] = input;
+    return new Message(id, input);
   },
 };
 

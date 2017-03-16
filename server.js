@@ -1,4 +1,8 @@
-const { graphql, buildSchema } = require('graphql');
+const express = require('express');
+const graphqlHTTP = require('express-graphql');
+const { buildSchema } = require('graphql');
+
+const PORT = 5000;
 
 const schema = buildSchema(`
   type Query {
@@ -12,9 +16,14 @@ const root = {
   },
 };
 
-async function run() {
-  const res = await graphql(schema, '{ hello }', root);
-  console.log(res);
-}
+const app = express();
 
-run();
+app.use('/graphql', graphqlHTTP({
+  schema,
+  rootValue: root,
+  graphiql: true,
+}));
+
+app.listen(PORT);
+
+console.log(`Running a GraphQL API server at localhost:${PORT}/graphql`);

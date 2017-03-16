@@ -24,6 +24,7 @@ const schema = buildSchema(`
   }
 
   type Query {
+    ip: String,
     getDie(numSides: Int): RandomDie
     getMessage(id: ID!): Message
   }
@@ -59,6 +60,9 @@ const findOrThrow = (id) => {
 };
 
 const root = {
+  ip(args, req) {
+    return req.ip;
+  },
   getDie({ numSides = 6 }) {
     return new RandomDie(numSides);
   },
@@ -80,6 +84,12 @@ const root = {
 
 const app = express();
 
+const logIpAddress = (req, res, next) => {
+  console.log(`ip: ${req.ip}`);
+  next();
+};
+
+app.use(logIpAddress);
 app.use('/graphql', graphqlHTTP({
   schema,
   rootValue: root,

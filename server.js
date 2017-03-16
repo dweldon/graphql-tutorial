@@ -12,5 +12,9 @@ const root = {
   },
 };
 
-graphql(schema, '{ hello }', root)
-  .then(res => console.log(res));
+async function run() {
+  const res = await graphql(schema, '{ hello }', root);
+  console.log(res);
+}
+
+run();

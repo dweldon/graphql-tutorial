@@ -3,19 +3,20 @@
   "version": "1.0.0",
   "main": "server.js",
   "license": "UNLICENSED",
-  "devDependencies": {
-    "eslint": "^3.17.1",
-    "eslint-config-airbnb-base": "^11.1.1",
-    "eslint-plugin-import": "^2.2.0",
-    "nodemon": "^1.11.0"
+  "scripts": {
+    "start": "nodemon"
   },
   "dependencies": {
     "express": "^4.15.2",
     "express-graphql": "^0.6.3",
     "graphql": "^0.9.1",
+    "graphql-tools": "^0.10.1",
     "lodash": "^4.17.4"
   },
-  "scripts": {
-    "start": "nodemon"
+  "devDependencies": {
+    "eslint": "^3.17.1",
+    "eslint-config-airbnb-base": "^11.1.1",
+    "eslint-plugin-import": "^2.2.0",
+    "nodemon": "^1.11.0"
   }
 }

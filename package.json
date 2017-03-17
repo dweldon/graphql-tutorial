@@ -4,6 +4,7 @@
   "main": "server.js",
   "license": "UNLICENSED",
   "scripts": {
+    "lint": "eslint --ext .js .",
     "start": "nodemon"
   },
   "dependencies": {
